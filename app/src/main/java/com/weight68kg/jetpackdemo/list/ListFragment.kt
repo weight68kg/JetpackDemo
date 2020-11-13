@@ -5,7 +5,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.weight68kg.jetpackdemo.R
+import com.weight68kg.jetpackdemo.architecture.UserProfileViewModel
+import com.weight68kg.jetpackdemo.data.CharacterBean
+import kotlinx.android.synthetic.main.fragment_list.*
+import kotlinx.android.synthetic.main.item_list_content.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -18,6 +27,27 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class ListFragment : Fragment() {
+    private var list = ArrayList<CharacterBean>()
+    private val viewModel: ListViewModle by viewModels()
+    private val adapter by lazy {
+        object : RecyclerView.Adapter<MyViewHolder>() {
+            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder =
+                MyViewHolder(
+                    LayoutInflater.from(requireContext())
+                        .inflate(R.layout.item_list_content, parent)
+                )
+
+            override fun getItemCount(): Int = list.size
+
+            override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+                holder.itemView.apply {
+                    id_text.text = list[position].name
+                }
+            }
+
+        }
+    }
+
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -36,6 +66,25 @@ class ListFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_list, container, false)
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        rv_list.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = adapter
+        }
+
+        viewModel.user.observe(viewLifecycleOwner, Observer {
+            list = it as ArrayList<CharacterBean>
+            adapter.notifyDataSetChanged()
+        })
+    }
+
+    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
     }
 
     companion object {

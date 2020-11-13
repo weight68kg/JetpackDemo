@@ -7,14 +7,14 @@ import androidx.room.PrimaryKey
 @Entity
 class CharacterBean(
     @PrimaryKey(autoGenerate = true)
-    var id: Int,
-    var name: String?,
-    var gender: String?,
-    var age: Int?,
-    var weight: Int?,
-    var height: Int?,
-    var camp: String?,
-    var race: String?
+    var id: Int = 0,
+    var name: String?=null,
+    var gender: String?=null,
+    var age: Int?=null,
+    var weight: Int?=null,
+    var height: Int?=null,
+    var camp: String?=null,
+    var race: String?=null
 )
 
 
