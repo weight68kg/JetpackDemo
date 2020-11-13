@@ -14,7 +14,6 @@ class UserRepository(
     // Simple in-memory cache. Details omitted for brevity.
     private val userCache: UserCache,
     private val webservice: Webservice
-
 ) {
 
 
