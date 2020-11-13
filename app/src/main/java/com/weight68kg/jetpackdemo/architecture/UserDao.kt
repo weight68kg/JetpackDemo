@@ -15,5 +15,5 @@ interface UserDao {
     @Query("SELECT * FROM user WHERE id = :userId")
     fun load(userId: String): LiveData<User>
 
-    fun hasUser(time:Long):Boolean
+//    fun hasUser(time:Long):Boolean
 }

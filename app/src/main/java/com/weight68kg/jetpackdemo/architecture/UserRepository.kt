@@ -54,7 +54,8 @@ class UserRepository(
         // Runs in a background thread.
         executor.execute {
             // Check if user data was fetched recently.
-            val userExists = userDao.hasUser(FRESH_TIMEOUT)
+//            val userExists = userDao.hasUser(FRESH_TIMEOUT)
+            val userExists = true
             if (!userExists) {
                 // Refreshes the data.
                 val response = webservice.getUser(userId).execute()

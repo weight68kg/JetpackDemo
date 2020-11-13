@@ -12,7 +12,7 @@ interface CharacterDao {
 
 
     @Query("SELECT * FROM CharacterBean WHERE gender IN (:gender)")
-    fun loadAllByGenders(gender: Gender): List<CharacterBean>
+    fun loadAllByGenders(gender: String): List<CharacterBean>
 
 
     @Insert
