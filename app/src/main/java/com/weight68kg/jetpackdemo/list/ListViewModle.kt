@@ -7,8 +7,8 @@ import com.weight68kg.jetpackdemo.architecture.UserRepository
 import com.weight68kg.jetpackdemo.data.CharacterBean
 
 class ListViewModle(
-    application: Application
-//    savedStateHandle: SavedStateHandle,
+    application: Application,
+    savedStateHandle: SavedStateHandle
 //    repository: ListRepository
 ) : AndroidViewModel(application) {
 
