@@ -1,10 +1,12 @@
 package com.weight68kg.jetpackdemo.list
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -29,19 +31,19 @@ private const val ARG_PARAM2 = "param2"
 class ListFragment : Fragment() {
     private var list = ArrayList<CharacterBean>()
     private val viewModel: ListViewModle by viewModels()
-    private val adapter by lazy {
+    private val mAdapter by lazy {
         object : RecyclerView.Adapter<MyViewHolder>() {
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder =
                 MyViewHolder(
                     LayoutInflater.from(requireContext())
-                        .inflate(R.layout.item_list_content, parent)
+                        .inflate(R.layout.item_list_content, parent, false)
                 )
 
             override fun getItemCount(): Int = list.size
 
             override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
                 holder.itemView.apply {
-                    id_text.text = list[position].name
+                    findViewById<TextView>(R.id.id_text).text = list[position].name
                 }
             }
 
@@ -74,12 +76,13 @@ class ListFragment : Fragment() {
 
         rv_list.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = adapter
+            adapter = mAdapter
         }
 
         viewModel.user.observe(viewLifecycleOwner, Observer {
             list = it as ArrayList<CharacterBean>
-            adapter.notifyDataSetChanged()
+            Log.e("tag", "${list.size}")
+            mAdapter.notifyDataSetChanged()
         })
     }
 
