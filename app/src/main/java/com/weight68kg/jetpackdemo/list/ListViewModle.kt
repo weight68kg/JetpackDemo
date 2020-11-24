@@ -2,34 +2,35 @@ package com.weight68kg.jetpackdemo.list
 
 import android.app.Application
 import androidx.lifecycle.*
+import com.weight68kg.jetpackdemo.DaggerApplicationComponent
 import com.weight68kg.jetpackdemo.architecture.User
 import com.weight68kg.jetpackdemo.architecture.UserRepository
 import com.weight68kg.jetpackdemo.data.CharacterBean
-
-class ListViewModle(
-    application: Application,
-    savedStateHandle: SavedStateHandle
-//    repository: ListRepository
-) : AndroidViewModel(application) {
+import dagger.hilt.android.scopes.ActivityScoped
+import javax.inject.Inject
 
 
-    //    val user: LiveData<List<CharacterBean>> = repository.getList()
-    val user: LiveData<List<CharacterBean>> = getList()
+@ActivityScoped
+class ListViewModle @Inject constructor(
+//    application: Application,
+//    savedStateHandle: SavedStateHandle,
+    repository: ListRepository
+) : ViewModel() {
 
 
-    fun getList(): LiveData<List<CharacterBean>> {
-        val data = MutableLiveData<List<CharacterBean>>()
+    val user: LiveData<List<CharacterBean>> = repository.getList()
 
-        val list = ArrayList<CharacterBean>()
-        list.add(CharacterBean(name = "路飞"))
-        list.add(CharacterBean(name = "索隆"))
-        list.add(CharacterBean(name = "乌索普"))
-        list.add(CharacterBean(name = "山治"))
-        list.add(CharacterBean(name = "娜美"))
-        list.add(CharacterBean(name = "乔巴"))
 
-        data.value = list
+    class Factory(
+//        val application: Application,
+//        val savedStateHandle: SavedStateHandle
+    ) : ViewModelProvider.NewInstanceFactory() {
 
-        return data
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            val create = DaggerApplicationComponent.create()
+            val repository = create.repository()
+            return ListViewModle(repository) as T
+        }
     }
 }
+

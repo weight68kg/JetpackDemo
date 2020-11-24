@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.ViewCompat
@@ -12,7 +13,6 @@ import androidx.fragment.app.Fragment
 import com.weight68kg.jetpackdemo.detail.ItemDetailActivity
 import androidx.core.util.Pair;
 import com.weight68kg.jetpackdemo.R
-import kotlinx.android.synthetic.main.fragment_home.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -48,6 +48,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val iv_top =view.findViewById<ImageView>(R.id.iv_top)
         iv_top.setOnClickListener {
             val intent = Intent(requireContext(), ItemDetailActivity::class.java)
 

@@ -8,12 +8,12 @@ import android.transition.Fade
 import android.transition.TransitionSet
 import android.view.MenuItem
 import android.view.Window
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.weight68kg.jetpackdemo.R
-import kotlinx.android.synthetic.main.activity_item_detail.*
 
 
 /**
@@ -29,6 +29,7 @@ class ItemDetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_item_detail)
         setSupportActionBar(findViewById(R.id.detail_toolbar))
 
+        val iv_top=findViewById<ImageView>(R.id.iv_top)
         /**
          * 1、设置相同的TransitionName
          */

@@ -9,14 +9,16 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.weight68kg.jetpackdemo.BaseApplication
 import com.weight68kg.jetpackdemo.R
 import com.weight68kg.jetpackdemo.architecture.UserProfileViewModel
 import com.weight68kg.jetpackdemo.data.CharacterBean
-import kotlinx.android.synthetic.main.fragment_list.*
-import kotlinx.android.synthetic.main.item_list_content.*
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -28,9 +30,14 @@ private const val ARG_PARAM2 = "param2"
  * Use the [ListFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+@AndroidEntryPoint
 class ListFragment : Fragment() {
     private var list = ArrayList<CharacterBean>()
-    private val viewModel: ListViewModle by viewModels()
+    lateinit var listComponent: ListComponent
+
+
+    @Inject
+    lateinit var viewModel: ListViewModle
     private val mAdapter by lazy {
         object : RecyclerView.Adapter<MyViewHolder>() {
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder =
@@ -55,6 +62,10 @@ class ListFragment : Fragment() {
     private var param2: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        listComponent =
+            (requireContext().applicationContext as BaseApplication).appComponent.loginComponent()
+                .create()
+        listComponent.inject(this)
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
@@ -73,6 +84,10 @@ class ListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val factory = ListViewModle.Factory()
+//        viewModel = ViewModelProvider(this, factory).get(ListViewModle::class.java)
+
+        val rv_list = view.findViewById<RecyclerView>(R.id.rv_list)
 
         rv_list.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -81,7 +96,6 @@ class ListFragment : Fragment() {
 
         viewModel.user.observe(viewLifecycleOwner, Observer {
             list = it as ArrayList<CharacterBean>
-            Log.e("tag", "${list.size}")
             mAdapter.notifyDataSetChanged()
         })
     }
